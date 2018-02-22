@@ -111,6 +111,15 @@ class Controller_Listas extends Controller_Rest
                     else
                     {
 
+                    if ($listas->titulo == "Canciones no escuchadas" || $listas->titulo == "Ultimas escuchadas"   )
+                    {
+                        $json = $this->response(array(
+                            'code' => 400,
+                            'message' => 'No se pueden sobreescribir estos nombres',
+                            'data' => []
+                        ));
+                    }
+
 
                         $listas->save();
                         
@@ -178,6 +187,32 @@ class Controller_Listas extends Controller_Rest
                
         }
 
+         $privacidad = Model_Privacidad::query()->where('id_usuario',$dataJwtUser->id)->get();
+                  
+                if(!empty($privacidad))
+                {
+                    foreach ($privacidad as $key => $privado) 
+                    {
+
+                        
+                        
+
+
+                        # code...
+                        if ($privado->listas == 1)
+                        {
+                           $json = $this->response(array(
+                                'code' => 400,
+                                'message' => 'El usuario tiene sus listas en privado',
+                                'data' => []
+                            ));
+                            return $json; 
+                        }
+                         # code...
+                     
+                    }
+                }
+
         $input = $_GET;
         $decena = $input['decena_lista']-1;
         if($input['decena_lista'] == '')
@@ -202,11 +237,17 @@ class Controller_Listas extends Controller_Rest
 
 
        $listas = Model_Listas::query()->where('id_usuario', $dataJwtUser->id)->offset( $decena * 10)->limit(10)->get();
+      
+
+       foreach ($listas as $key => $lista) {
+           $nomlista[] = $lista->titulo;
+           
+       }
 
         $json = $this->response(array(
             'code' => 200,
             'message' => 'Conjunto de listas',
-            'data' => $listas
+            'data' => $nomlista
         ));
 
         return $json;
@@ -268,11 +309,40 @@ class Controller_Listas extends Controller_Rest
                    
                         )
                      ));
+        
+
+        if(empty($listas))
+        {
+            $json = $this->response(array(
+                        'code' => 400,
+                        'message' => 'Lista no encontrada',
+                        'data' => []
+                    ));
+
+                    return $json;
+
+        }
       
         foreach ($listas as $key => $lista) 
         {
+            if($lista->editable == 1)
+            {
+
+
             $lista->titulo = $input['titulo'];
             $lista->save();
+            }
+            else
+            {
+                $json = $this->response(array(
+                        'code' => 400,
+                        'message' => 'Lista no editable',
+                        'data' => []
+                    ));
+
+                    return $json;
+
+            }
         }
 
         $json = $this->response(array(

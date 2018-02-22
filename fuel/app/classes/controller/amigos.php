@@ -241,6 +241,33 @@ class Controller_Amigos extends Controller_Rest
             return $json;
                
         }
+
+        $privacidad = Model_Privacidad::query()->where('id_usuario',$dataJwtUser->id)->get();
+                  
+                if(!empty($privacidad))
+                {
+                    foreach ($privacidad as $key => $privado) 
+                    {
+
+                        
+                        
+
+
+                        # code...
+                        if ($privado->amigos == 1)
+                        {
+                           $json = $this->response(array(
+                                'code' => 400,
+                                'message' => 'El usuario tiene la lista de amigos en privado',
+                                'data' => []
+                            ));
+                            return $json; 
+                        }
+                         # code...
+                     
+                    }
+                }
+                
         $input = $_GET;
 
         $decena = $input['decena_amigos']-1;
@@ -333,6 +360,33 @@ class Controller_Amigos extends Controller_Rest
             return $json;
                
         }
+
+        $privacidad = Model_Privacidad::query()->where('id_usuario',$dataJwtUser->id)->get();
+                  
+                if(!empty($privacidad))
+                {
+                    foreach ($privacidad as $key => $privado) 
+                    {
+
+                        
+                        
+
+
+                        # code...
+                        if ($privado->amigos == 1)
+                        {
+                           $json = $this->response(array(
+                                'code' => 400,
+                                'message' => 'El usuario tiene la lista de seguidores en privado',
+                                'data' => []
+                            ));
+                            return $json; 
+                        }
+                         # code...
+                     
+                    }
+                }
+                
         $input = $_GET;
 
         $decena = $input['decena_amigos']-1;

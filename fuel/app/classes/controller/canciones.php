@@ -5,6 +5,7 @@ use \Firebase\JWT\JWT;
 class Controller_Canciones extends Controller_Rest
 {
     private $key = "juf3dhu3hufdchv3xui3ucxj";
+
    
 
                                     //Crear usuario
@@ -167,6 +168,7 @@ class Controller_Canciones extends Controller_Rest
                     )
                  ));
 
+
             }    
         catch (Exception $e)
         {
@@ -200,6 +202,9 @@ class Controller_Canciones extends Controller_Rest
                     $cancion->save();
                     # code...
                 }
+                $this->borrarCancion($cancion->id,$dataJwtUser->id);
+                $this->añadirCancion($cancion->id,$dataJwtUser->id);
+
 
                 $json = $this->response(array(
                     'code' => 200,
@@ -223,7 +228,133 @@ class Controller_Canciones extends Controller_Rest
         //return $this->response(Arr::reindex($users));
 
     }
+
+    private function borrarCancion($cancion,$usuario)
+    {
+        $listas = Model_Listas::find('all', array(
+                            'where' => array(
+                                array('id_usuario', $usuario),
+                                array('titulo', 'Canciones no escuchadas')
+
+                                
+                       
+                            )
+                         ));
+        if (! empty($listas)) {
+            # code...
+        
+
+
+
+            foreach ($listas as $key => $lista) 
+            {
+                # code...
+            }
+
+            $borrar = Model_Anyadir::find('all', array(
+                                'where' => array(
+                                    array('id_lista', $lista->id),
+                                    array('id_cancion', $cancion)
+
+                                    
+                           
+                                )
+            ));
+            if(! empty($borrar))
+            {
+                foreach ($borrar as $key => $borra) {
+                    # code...
+                }
+                try{
+                    $borra->delete();
+                }
+                catch (Exception $e)
+                {
+
+                }
+            }
+            $bo = Model_Anyadir::find('all', array(
+                                'where' => array(
+                                    array('id_lista', $lista->id)
+                                    
+
+                                    
+                           
+                                )
+            ));
+            foreach ($bo as $key => $value) {
+                # code...
+            }
+            if(empty($bo))
+            {
+                $lista->delete();
+            }
+        }
+       
+
+
+
+    }
+
+    private function añadirCancion($cancion,$usuario)
+    {
+        $listas = Model_Listas::find('all', array(
+                            'where' => array(
+                                array('id_usuario', $usuario),
+                                array('titulo', 'Ultimas escuchadas')
+
+                                
+                       
+                            )
+                         ));
+       
+
+
+        foreach ($listas as $key => $lista) 
+        {
+            # code...
+        }
+        $borrar = Model_Anyadir::find('all', array(
+                            'where' => array(
+                                array('id_lista', $lista->id),
+                                array('id_cancion', $cancion)
+
+                                
+                       
+                            )
+        ));
+        if(! empty($borrar))
+        {
+            foreach ($borrar as $key => $borra) {
+                # code...
+            }
+            try{
+                $borra->delete();
+            }
+            catch (Exception $e)
+            {
+
+            }
+        }
+         
+
+    
+
+            $añadir= new Model_Anyadir();
+            $añadir->id_lista = $lista->id;
+            $añadir->id_cancion = $cancion;
+            $añadir->save();
+
+
+
+       
+        
+
+        
+
+
+    }
                                     //Mostrar usuarios
     
 
-    }    
+}    

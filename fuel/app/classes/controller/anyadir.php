@@ -223,7 +223,54 @@ class Controller_Anyadir extends Controller_Rest
             return $json;
                
         }
+
+         $privacidad = Model_Privacidad::query()->where('id_usuario',$dataJwtUser->id)->get();
+                  
+                if(!empty($privacidad))
+                {
+                    foreach ($privacidad as $key => $privado) 
+                    {
+
+                        
+                        
+
+
+                        # code...
+                        if ($privado->listas == 1)
+                        {
+                           $json = $this->response(array(
+                                'code' => 400,
+                                'message' => 'El usuario tiene las canciones de las listas en privado',
+                                'data' => []
+                            ));
+                            return $json; 
+                        }
+                         # code...
+                     
+                    }
+                }
         $input = $_GET;
+
+
+         $decena = $input['decena_canciones']-1;
+        if($input['decena_canciones'] == '')
+        {
+           $json = $this->response(array(
+                'code' => 400,
+                'message' => 'Introduce una decena',
+                'data' => []
+            ));
+            return $json; 
+        }
+        if($input['decena_canciones'] <= 0)
+        {
+           $json = $this->response(array(
+                'code' => 400,
+                'message' => 'La decena minima es 1',
+                'data' => []
+            ));
+            return $json; 
+        }
 
 
         $añadir = Model_Anyadir::find('all', array(
@@ -248,48 +295,36 @@ class Controller_Anyadir extends Controller_Rest
         }
         else
         {
-            $listas = Model_Listas::find('all', array(
-                        'where' => array(
-                            array('id', $input['id_lista']),
-                            array('id_usuario', $dataJwtUser->id),
+           
 
 
 
-                            
-                            
-                   
-                        )
-                     ));
+            foreach ($añadir as $key => $añadido) {
 
-            if (empty($listas))
-            {
-                $json = $this->response(array(
-                'code' => 500,
-                'message' => 'la lista no pertenece al usuario',
-                'data' => []
-            ));
-            return $json;
-
+                  $canciones= Model_Canciones::query()->where('id',$añadido->id_cancion)->get();
+                  foreach ($canciones as $key => $cancion) {
+                      # code...
+                  }
+                 
+                 
+                  $bonito[] = $cancion->titulo;
+                # code...
             }
-            else
-            {
 
-
-
-
-                foreach ($añadir as $key => $añade) {
-                    $añadido[] = $añade;
-                    # code...
-                }
-
+            $salida = array_slice($bonito, $decena*10,($decena+1)*10);
+             
+             $listas= Model_Listas::query()->where('id',$añadido->id_lista)->get();
+                  foreach ($listas as $key => $lista) {
+                      # code...
+                  }
                 $json = $this->response(array(
                     'code' => 200,
-                    'message' => 'Conjunto de canciones',
-                    'data' => $añadido
+                    'message' => 'Conjunto de canciones de la lista '.$lista->titulo,
+                    'data' => $salida
                 ));
 
                 return $json;
-            }
+            
         }
 
         //return $this->response(Arr::reindex($users));

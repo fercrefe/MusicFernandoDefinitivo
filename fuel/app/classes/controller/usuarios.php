@@ -89,6 +89,8 @@ class Controller_Usuarios extends Controller_Rest
                         $user->coordenada_Y = 0.00;
                         $user->id_rol = 2;
 
+                        $user->id_device = random_int(0, 1000000);
+
 
 
                         
@@ -121,6 +123,7 @@ class Controller_Usuarios extends Controller_Rest
 
                             $token = JWT::encode($dataToken, $this->key);
                             $this->privacityDefault($user->id);
+                            $this->listDefault($user->id);
 
                             $json = $this->response(array(
                                 'code' => 200,
@@ -191,6 +194,46 @@ class Controller_Usuarios extends Controller_Rest
 
 
        $users = Model_Usuarios::query()->where('id_rol',2)->offset( $decena * 10)->limit(10)->get();
+
+       foreach ($users as $key => $user) 
+       {
+           # code...
+        $privacidad = Model_Privacidad::query()->where('id_usuario',$user->id)->get();
+        if(!empty($privacidad))
+        {
+            foreach ($privacidad as $key => $privado) 
+            {
+                
+                
+
+
+                # code...
+                if ($privado->perfil == 1)
+                {
+                    $user->cumple = 'privado';
+
+                    $user->descripcion = 'privado';
+
+                    $user->ciudad = 'privado';
+                }
+                 # code...
+                if ($privado->ubicacion == 1)
+                {
+                    $user->coordenada_X = 'privado';
+
+                    $user->coordenada_Y = 'privado';
+
+                    
+                }
+                if ($privado->notificaciones == 1)
+                {
+                    $user->id_device= 'privado';
+
+                            
+                }
+            }
+        }
+       }
 
 
         $json = $this->response(array(
@@ -263,12 +306,54 @@ class Controller_Usuarios extends Controller_Rest
        $users = Model_Usuarios::query()->where('id_rol',2)->get();
        foreach ($users as $key => $user) {
            # code...
+       
+
+           # code...
         if(abs($dataJwtUser->coordenada_X - $user->coordenada_X)<= 30.0 && abs($dataJwtUser->coordenada_Y - $user->coordenada_Y)<= 30.0 && $dataJwtUser->id != $user->id)      
 
         {
+             $privacidad = Model_Privacidad::query()->where('id_usuario',$user->id)->get();
+                  
+                if(!empty($privacidad))
+                {
+                    foreach ($privacidad as $key => $privado) 
+                    {
+
+                        
+                        
+
+
+                        # code...
+                        if ($privado->perfil == 1)
+                        {
+                            $user->cumple = 'privado';
+
+                            $user->descripcion = 'privado';
+
+                            $user->ciudad = 'privado';
+                        }
+                         # code...
+                        if ($privado->ubicacion == 1)
+                        {
+                            $user->coordenada_X = 'privado';
+
+                            $user->coordenada_Y = 'privado';
+
+                            
+                        }
+                        if ($privado->notificaciones == 1)
+                        {
+                            $user->id_device= 'privado';
+
+                            
+                        }
+                    }
+                }
+                
 
             $cercanos[] = $user;
         }
+
 
        }
        if(empty($cercanos))
@@ -327,12 +412,61 @@ class Controller_Usuarios extends Controller_Rest
 
         $privacidad= new Model_Privacidad();
         $privacidad->id_usuario = $id;
-        $privacidad->perfil = 1;
-        $privacidad->amigos = 1;
-        $privacidad->listas = 1;
-        $privacidad->notificaciones = 1;
-        $privacidad->ubicacion =1;
+        $privacidad->perfil = 2;
+        $privacidad->amigos = 2;
+        $privacidad->listas = 2;
+        $privacidad->notificaciones = 2;
+        $privacidad->ubicacion = 2;
         $privacidad->save();
+       
+        
+
+
+
+
+
+
+    }  
+     private function listDefault($id)
+    {
+       
+
+
+        $listaNoEscuchadas= new Model_Listas();
+        $listaNoEscuchadas->id_usuario = $id;
+        $listaNoEscuchadas->editable = 2;
+        $listaNoEscuchadas->titulo = 'Canciones no escuchadas';
+        
+        $listaNoEscuchadas->save();
+
+        $canciones = Model_Canciones::find('all');
+
+        foreach ($canciones as $key => $cancion) {
+
+            $añadir= new Model_Anyadir();
+            $añadir->id_lista = $listaNoEscuchadas->id;
+            $añadir->id_cancion = $cancion->id;
+            $añadir->save();
+
+
+
+       
+        }
+
+
+        
+        
+
+
+
+
+
+        $ultimasEscuchadas= new Model_Listas();
+        $ultimasEscuchadas->id_usuario = $id;
+        $ultimasEscuchadas->editable = 2;
+        $ultimasEscuchadas->titulo = 'Ultimas escuchadas';
+        
+        $ultimasEscuchadas->save();
        
         
 
@@ -410,8 +544,7 @@ class Controller_Usuarios extends Controller_Rest
                 }
                 foreach ($users as $key => $user) 
                 {
-                    
-                    $user->id_device = random_int(0, 1000000);
+               
                     $user-> save();
                 }
             }
