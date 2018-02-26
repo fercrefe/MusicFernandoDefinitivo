@@ -137,14 +137,6 @@ class Controller_Amigos extends Controller_Rest
                     $amigos = new Model_Amigos();
                     $amigos->id_usuario_seguidor = $dataJwtUser->id;
                     $amigos->id_usuario_seguido = $usuario->id;
-
-                   
-                   
-
-
-                    
-                
-                
                
                     if ($amigos->id_usuario_seguido == "" || $amigos->id_usuario_seguidor == ""   )
                     {
@@ -164,16 +156,6 @@ class Controller_Amigos extends Controller_Rest
                         ));
                         return $json;
                     }
-                    
-                    
-                   
-
-
-                    
-                    
-                        
-                        
-
 
                             $amigos->save();
                             
@@ -218,9 +200,6 @@ class Controller_Amigos extends Controller_Rest
                 $token = $headers['Authorization'];
                 $dataJwtUser = JWT::decode($token, $this->key, array('HS256'));
 
-        
-      
-
                 $users = Model_Usuarios::find('all', array(
                     'where' => array(
                         array('id', $dataJwtUser->id),
@@ -248,10 +227,6 @@ class Controller_Amigos extends Controller_Rest
                 {
                     foreach ($privacidad as $key => $privado) 
                     {
-
-                        
-                        
-
 
                         # code...
                         if ($privado->amigos == 1)
@@ -543,7 +518,7 @@ class Controller_Amigos extends Controller_Rest
                         # code...
                     }
 
-                    Model_Anyadir::find($amigo);
+                    Model_Anadir::find($amigo);
                     try
                     {
                         

@@ -2,7 +2,7 @@
 
 namespace Fuel\Migrations;
 
-class listasContienenCanciones
+class listasCanciones
 {
 
     function up()
@@ -13,7 +13,7 @@ class listasContienenCanciones
         ), array('id_lista', 'id_cancion'), false, 'InnoDB', 'utf8_unicode_ci',
 		    array(
 		        array(
-		            'constraint' => 'claveAjenaListasContienenCancionesAListas',
+		            'constraint' => 'claveAjenaListasCancionesAListas',
 		            'key' => 'id_lista',
 		            'reference' => array(
 		                'table' => 'listas',
@@ -23,7 +23,7 @@ class listasContienenCanciones
 		            'on_delete' => 'RESTRICT'
 		        ),
 		        array(
-		            'constraint' => 'claveAjenaListasContienenCancionesACanciones',
+		            'constraint' => 'claveAjenaListasCancionesACanciones',
 		            'key' => 'id_cancion',
 		            'reference' => array(
 		                'table' => 'canciones',

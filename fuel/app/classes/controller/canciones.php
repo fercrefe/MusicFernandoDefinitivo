@@ -251,7 +251,7 @@ class Controller_Canciones extends Controller_Rest
                 # code...
             }
 
-            $borrar = Model_Anyadir::find('all', array(
+            $borrar = Model_Anadir::find('all', array(
                                 'where' => array(
                                     array('id_lista', $lista->id),
                                     array('id_cancion', $cancion)
@@ -273,7 +273,7 @@ class Controller_Canciones extends Controller_Rest
 
                 }
             }
-            $bo = Model_Anyadir::find('all', array(
+            $bo = Model_Anadir::find('all', array(
                                 'where' => array(
                                     array('id_lista', $lista->id)
                                     
@@ -314,7 +314,7 @@ class Controller_Canciones extends Controller_Rest
         {
             # code...
         }
-        $borrar = Model_Anyadir::find('all', array(
+        $borrar = Model_Anadir::find('all', array(
                             'where' => array(
                                 array('id_lista', $lista->id),
                                 array('id_cancion', $cancion)
@@ -340,7 +340,7 @@ class Controller_Canciones extends Controller_Rest
 
     
 
-            $añadir= new Model_Anyadir();
+            $añadir= new Model_Anadir();
             $añadir->id_lista = $lista->id;
             $añadir->id_cancion = $cancion;
             $añadir->save();

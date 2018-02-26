@@ -22,33 +22,12 @@ class Controller_Roles extends Controller_Rest
 
                 return $json;
             }
-
-            /*if (strlen($_POST['password']) < 6 || strlen($_POST['password']) >12){
-                $json = $this->response(array(
-                    'code' => 400,
-                    'message' => 'Contraseña: entre 6 y 12 caracteres',
-                    'data' => []
-                ));
-
-                return $json;
-
-            }*/
-
-
-          
-
             $input = $_POST;
             
                 $roles = new Model_Roles();
                 $roles->tipo= $input['tipo'];
                
-
-
-                
-            
-            
-           
-                if ($roles->tipo == "" )
+            if ($roles->tipo == "" )
                 {
                     $json = $this->response(array(
                         'code' => 400,
@@ -78,11 +57,8 @@ class Controller_Roles extends Controller_Rest
         catch (Exception $e) 
         {
            
-            
-
                 $json = $this->response(array(
                     'code' => 500,
-               // 'message' => $e->getCode()
                     'message' => $e->getMessage(),
                     'data' => []
                 ));
@@ -92,7 +68,4 @@ class Controller_Roles extends Controller_Rest
             
         }        
     }
-                                    //Mostrar usuarios
-    
-
-    }    
+}    

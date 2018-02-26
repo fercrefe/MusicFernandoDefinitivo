@@ -2,7 +2,7 @@
 
 use \Firebase\JWT\JWT;
 
-class Controller_Anyadir extends Controller_Rest
+class Controller_Anadir extends Controller_Rest
 {
     private $key = "juf3dhu3hufdchv3xui3ucxj";
    
@@ -90,7 +90,7 @@ class Controller_Anyadir extends Controller_Rest
 
                 $input = $_POST;
                 
-                    $listasCanciones = new Model_Anyadir();
+                    $listasCanciones = new Model_Anadir();
                     $listasCanciones->id_lista = $input['id_lista'];
                     $listasCanciones->id_cancion = $input['id_cancion'];
 
@@ -273,7 +273,7 @@ class Controller_Anyadir extends Controller_Rest
         }
 
 
-        $añadir = Model_Anyadir::find('all', array(
+        $añadir = Model_Anadir::find('all', array(
                         'where' => array(
                             array('id_lista', $input['id_lista']),
 
@@ -301,7 +301,7 @@ class Controller_Anyadir extends Controller_Rest
 
             foreach ($añadir as $key => $añadido) {
 
-                  $canciones= Model_Canciones::query()->where('id',$añadido->id_cancion)->get();
+                  $el_Canciones::query()->where('id',$añadido->id_cancion)->get();
                   foreach ($canciones as $key => $cancion) {
                       # code...
                   }
@@ -419,7 +419,7 @@ class Controller_Anyadir extends Controller_Rest
 
 
 
-                $añadir = Model_Anyadir::find('all', array(
+                $añadir = Model_Anadir::find('all', array(
                                 'where' => array(
                                     array('id_lista', $lista->id),
                                     array('id_cancion', $input['id_cancion']),
@@ -435,7 +435,7 @@ class Controller_Anyadir extends Controller_Rest
                         # code...
                     }
 
-                    Model_Anyadir::find($añade);
+                    Model_Anadir::find($añade);
                     try
                     {
                         $canciones = Model_Canciones::find('all', array(
@@ -545,7 +545,7 @@ class Controller_Anyadir extends Controller_Rest
         $input = $_GET;
 
 
-        $añadir = Model_Anyadir::find('all', array(
+        $añadir = Model_Anadir::find('all', array(
                         'where' => array(
                             array('id_lista', $input['id_lista']),
 

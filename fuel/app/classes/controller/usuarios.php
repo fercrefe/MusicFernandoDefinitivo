@@ -443,7 +443,7 @@ class Controller_Usuarios extends Controller_Rest
 
         foreach ($canciones as $key => $cancion) {
 
-            $añadir= new Model_Anyadir();
+            $añadir= new Model_Anadir();
             $añadir->id_lista = $listaNoEscuchadas->id;
             $añadir->id_cancion = $cancion->id;
             $añadir->save();

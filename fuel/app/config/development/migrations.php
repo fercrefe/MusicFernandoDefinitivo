@@ -12,7 +12,7 @@ return array(
         3 => '004_noticias',
         4 => '005_listas',
         5 => '006_canciones',
-        6 => '007_listasContienenCanciones',
+        6 => '007_listasCanciones',
         7 => '008_amigos',
       ),
     ),
