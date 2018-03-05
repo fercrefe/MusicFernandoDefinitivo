@@ -122,8 +122,7 @@ class Controller_Usuarios extends Controller_Rest
                                 );
 
                             $token = JWT::encode($dataToken, $this->key);
-                            $this->privacityDefault($user->id);
-                            $this->listDefault($user->id);
+                            
 
                             $json = $this->response(array(
                                 'code' => 200,
